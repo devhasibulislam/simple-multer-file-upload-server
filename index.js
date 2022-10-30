@@ -1,9 +1,10 @@
 // external imports
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
+const mongoose = require("mongoose");
 
 // internal imports
-const dbConnection = require("./utils/db.util");
 const errorHandler = require("./middleware/error.middleware");
 const userRouter = require("./routes/user.route");
 const avatarRouter = require("./routes/avatar.route");
@@ -25,7 +26,15 @@ app.use("/avatar", avatarRouter);
 app.use(errorHandler);
 
 // DB connection
-dbConnection();
+mongoose
+  .connect(process.env.ATLAS_URI, {
+    dbName: "file-upload",
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log("Successfully connect Mongoose with MongoDB.");
+  });
 
 // enable backend connection
 app.get("/", (req, res) => {
