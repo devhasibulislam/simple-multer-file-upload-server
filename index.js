@@ -14,7 +14,15 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // middleware connection
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    credentials: true,
+    optionsSuccessStatus: 204,
+  })
+);
 app.use(express.json());
 app.use(express.static("avatars"));
 
